@@ -10,8 +10,13 @@ import Charts
 
 struct TodayView: View {
     
-    let steps: Int
     let stepsByHour: [Int]
+    
+    let openSettingsTapped: () -> Void
+    
+    private var steps: Int {
+        return stepsByHour.reduce(0, +)
+    }
     
     @State private var topContentHeight = 0.0
     
@@ -29,10 +34,15 @@ struct TodayView: View {
                 }
                 .readSize { topContentHeight = $0.height }
                 Spacer()
+                if steps == 0 {
+                    VStack(spacing: 1) {
+                        Text("Not seeing any steps? Your HealthKit Permissions may be disabled.")
+                        Button("Open HealthKit Settings →", action: openSettingsTapped)
+                    }
+                    .multilineTextAlignment(.center)
+                    
+                }
                 stepsByHourChart
-                // I prefer self-sizing using dynamic elements/screen size, but some see this as overkill.
-                // Hardcoding maxHeight (like below) also works.
-//                .frame(maxHeight: 300)
             } else {
                 ProgressView("Fetching steps...")
             }
@@ -50,6 +60,9 @@ struct TodayView: View {
         .chartXVisibleDomain(length: 6)
         .defaultScrollAnchor(.trailing)
         .frame(maxHeight: topContentHeight * 2)
+        // I prefer self-sizing using dynamic elements/screen size, but some see this as overkill.
+        // Hardcoding maxHeight (like below) also works.
+//       .frame(maxHeight: 300)
     }
     
     private func hourForIndex(_ i: Int) -> String {

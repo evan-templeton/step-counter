@@ -18,14 +18,11 @@ protocol StepsServiceProtocol {
 enum StepsServiceError: Error {
     case fetchSteps
     case healthKitDataUnavailable
-    case authorizationDenied
     case utcTime
     case uploadSteps
     
     var userMessage: String {
         return switch self {
-            case .authorizationDenied:
-                "It looks like you've denied authorization. Please go to Settings > Privacy & Security > Health > Step Counter to allow access to your steps."
             case .healthKitDataUnavailable:
                 "This device doesn't have access to your health data."
             case .fetchSteps:
@@ -101,6 +98,9 @@ final class StepsService: StepsServiceProtocol {
     }
     
     private func fetchAuthToken() async throws -> String {
+        if let token = UserDefaults.standard.string(forKey: "authToken") {
+            return token
+        }
         guard let url = URL(string: "https://testapi.mindware.us/auth/local") else {
             throw URLError(.badURL)
         }
@@ -115,7 +115,9 @@ final class StepsService: StepsServiceProtocol {
         }
         let (data, _) = try await URLSession.shared.data(for: request)
         let response = try JSONDecoder().decode(AuthResponse.self, from: data)
-        return response.jwt
+        let token = response.jwt
+        UserDefaults.standard.set(token, forKey: "authToken")
+        return token
     }
     
     private func uploadSteps(authToken: String, steps: Int) async throws {

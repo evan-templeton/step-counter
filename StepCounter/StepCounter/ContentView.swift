@@ -26,7 +26,6 @@ struct ContentView: View {
             )
         } else {
             mainView
-                .padding(.horizontal)
         }
     }
     
@@ -39,18 +38,26 @@ struct ContentView: View {
             }
             .pickerStyle(.segmented)
             TabView(selection: $selectedTab) {
-                TodayView(steps: viewModel.stepsToday, stepsByHour: viewModel.stepsByHour)
-                    .tag(Tab.today)
+                TodayView(stepsByHour: viewModel.stepsByHour, openSettingsTapped: openSettings)
+                .tag(Tab.today)
                 HistoryView()
                     .tag(Tab.history)
             }
             .task {
                 if !viewModel.isAuthorized {
                     await viewModel.requestAuthorization()
-                } else {
-                    await viewModel.getSteps()
                 }
+                await viewModel.getSteps()
             }
+        }
+        .padding()
+    }
+    
+    private func openSettings() {
+        if let url = URL(string: "App-Prefs:Privacy&path=HEALTH"), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        } else {
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }
     }
 }
@@ -80,7 +87,7 @@ final class StepsServiceMock: StepsServiceProtocol {
     }
     
     func fetchStepsByHour() async throws -> [Int] {
-        return Array(repeating: 100, count: 20)
+        return Array(repeating: 0, count: 20)
     }
     
     func uploadSteps(_ steps: Int) async throws {

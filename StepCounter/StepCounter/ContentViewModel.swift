@@ -13,9 +13,7 @@ final class ContentViewModel: ObservableObject {
     
     private let stepsService: StepsServiceProtocol
     
-    @Published var stepsToday = 0
     @Published var stepsByHour = [Int]()
-    
     @Published var errorMessage: String?
     
     let timer = Timer.publish(every: 300, on: .main, in: .common).autoconnect()
@@ -47,7 +45,6 @@ final class ContentViewModel: ObservableObject {
         errorMessage = nil
         do {
             let steps = try await stepsService.fetchStepsByHour()
-            stepsToday = steps.reduce(0, +)
             stepsByHour = steps
         } catch {
             handleError(error)
@@ -57,7 +54,6 @@ final class ContentViewModel: ObservableObject {
     private func handleError(_ error: Error) {
         if let error = error as? StepsServiceError {
             errorMessage = error.userMessage
-            // TODO: if denied, navigate to settings
         } else {
             errorMessage = "Unknown error"
         }
