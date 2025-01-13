@@ -12,7 +12,7 @@ protocol StepsServiceProtocol {
     var isAuthorized: Bool { get }
     func requestAuthorization() async throws
     func fetchStepsByHour() async throws -> [Int]
-    func uploadSteps(_ steps: Int) async throws
+    func fetchStepsForLast30Days() async throws -> [DailyStepsResult]
 }
 
 enum StepsServiceError: Error {
@@ -92,7 +92,19 @@ final class StepsService: StepsServiceProtocol {
         return steps
     }
     
-    func uploadSteps(_ steps: Int) async throws {
+    func fetchStepsForLast30Days() async throws -> [DailyStepsResult] {
+        do {
+            let token = try await fetchAuthToken()
+            let request = try Self.buildFetchRequest(authToken: token)
+            let (data, _) = try await URLSession.shared.data(for: request)
+            let response = try JSONDecoder().decode([DailyStepsResult].self, from: data)
+            return response.sorted(by: { $0.datetime < $1.datetime })
+        } catch {
+            throw error
+        }
+    }
+    
+    private func uploadSteps(_ steps: Int) async throws {
         let token = try await fetchAuthToken()
         try await uploadSteps(authToken: token, steps: steps)
     }
@@ -129,10 +141,9 @@ final class StepsService: StepsServiceProtocol {
             let (data, response) = try await URLSession.shared.data(for: request)
             if let response = response as? HTTPURLResponse, response.statusCode != 200 {
                 let responseString = String(decoding: data, as: UTF8.self)
-                print("Error uploading steps: \(responseString)")
+                debugPrint("Error uploading steps: \(responseString)")
                 return
             }
-            print("successfully uploaded steps")
         } catch {
             throw error
         }
@@ -149,6 +160,18 @@ final class StepsService: StepsServiceProtocol {
         return request
     }
     
+    private static func buildFetchRequest(authToken: String) throws -> URLRequest {
+        guard var urlComponents = URLComponents(string: "https://testapi.mindware.us/steps") else {
+            throw URLError(.badURL)
+        }
+        urlComponents.queryItems = [URLQueryItem(name: "_limit", value: "30")]
+        guard let url = urlComponents.url else { throw URLError(.badURL) }
+        var request = URLRequest(url: url)
+        request.addValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
+
+        return request
+    }
+    
     private func getDateInUTC() throws -> Date {
         let calendar = Calendar.current
         let components = calendar.dateComponents(in: .gmt, from: Date())
@@ -157,30 +180,4 @@ final class StepsService: StepsServiceProtocol {
         }
         return datetime
     }
-    
-    struct AuthRequest: Codable {
-        let identifier: String
-        let password: String
-    }
-    
-    struct AuthResponse: Codable {
-        let jwt: String
-    }
-    
-    struct StepsRequest: Codable {
-        let username: String
-        let date: Date
-        let time: Date
-        let totalByDay: Int
-        let count: Int
-        
-        enum CodingKeys: String, CodingKey {
-            case username
-            case date = "steps_date"
-            case time = "steps_datetime"
-            case count = "steps_count"
-            case totalByDay = "steps_total_by_day"
-        }
-    }
-
 }

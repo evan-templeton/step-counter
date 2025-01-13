@@ -14,6 +14,7 @@ final class ContentViewModel: ObservableObject {
     private let stepsService: StepsServiceProtocol
     
     @Published var stepsByHour = [Int]()
+    @Published var stepsByDay = [DailyStepsResult]()
     @Published var errorMessage: String?
     
     let timer = Timer.publish(every: 300, on: .main, in: .common).autoconnect()
@@ -27,7 +28,7 @@ final class ContentViewModel: ObservableObject {
         self.stepsService = stepsService
         self.timer.sink { _ in
             Task {
-                await self.getSteps()
+                await self.getStepsByHour()
             }
         }.store(in: &timerBag)
     }
@@ -41,11 +42,21 @@ final class ContentViewModel: ObservableObject {
         }
     }
     
-    func getSteps() async {
+    func getStepsByHour() async {
         errorMessage = nil
         do {
             let steps = try await stepsService.fetchStepsByHour()
             stepsByHour = steps
+        } catch {
+            handleError(error)
+        }
+    }
+    
+    func getStepsByDay() async {
+        errorMessage = nil
+        do {
+            let steps = try await stepsService.fetchStepsForLast30Days()
+            stepsByDay = steps
         } catch {
             handleError(error)
         }

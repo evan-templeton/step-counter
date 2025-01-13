@@ -40,14 +40,18 @@ struct ContentView: View {
             TabView(selection: $selectedTab) {
                 TodayView(stepsByHour: viewModel.stepsByHour, openSettingsTapped: openSettings)
                 .tag(Tab.today)
-                HistoryView()
+                HistoryView(thirtyDaySteps: viewModel.stepsByDay, buttonPressed: {
+                    Task {
+                        await viewModel.getStepsByDay()
+                    }
+                })
                     .tag(Tab.history)
             }
             .task {
                 if !viewModel.isAuthorized {
                     await viewModel.requestAuthorization()
                 }
-                await viewModel.getSteps()
+                await viewModel.getStepsByHour()
             }
         }
         .padding()
@@ -77,20 +81,4 @@ fileprivate enum Tab: CaseIterable {
 #Preview {
     let viewModel = ContentViewModel(stepsService: StepsServiceMock())
     return ContentView(viewModel: viewModel)
-}
-
-final class StepsServiceMock: StepsServiceProtocol {
-    var isAuthorized: Bool = true
-    
-    func requestAuthorization() async throws {
-        
-    }
-    
-    func fetchStepsByHour() async throws -> [Int] {
-        return Array(repeating: 0, count: 20)
-    }
-    
-    func uploadSteps(_ steps: Int) async throws {
-        print("Uploaded \(steps) steps")
-    }
 }
