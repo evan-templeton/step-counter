@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DailyStepsResult: Identifiable {
+struct DailyStepsResult: Identifiable, Equatable {
     let id: Int
     let datetime: Date
     let totalSteps: Int
