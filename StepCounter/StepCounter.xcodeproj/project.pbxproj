@@ -14,19 +14,11 @@
 			remoteGlobalIDString = 72BA346E2D26D14F00CACED0;
 			remoteInfo = StepCounter;
 		};
-		72BA348F2D26D15100CACED0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 72BA34672D26D14F00CACED0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 72BA346E2D26D14F00CACED0;
-			remoteInfo = StepCounter;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		72BA346F2D26D14F00CACED0 /* StepCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StepCounter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72BA34842D26D15100CACED0 /* StepCounterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StepCounterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		72BA348E2D26D15100CACED0 /* StepCounterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StepCounterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -57,13 +49,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		72BA348B2D26D15100CACED0 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -81,7 +66,6 @@
 			children = (
 				72BA346F2D26D14F00CACED0 /* StepCounter.app */,
 				72BA34842D26D15100CACED0 /* StepCounterTests.xctest */,
-				72BA348E2D26D15100CACED0 /* StepCounterUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -134,26 +118,6 @@
 			productReference = 72BA34842D26D15100CACED0 /* StepCounterTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		72BA348D2D26D15100CACED0 /* StepCounterUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 72BA349E2D26D15100CACED0 /* Build configuration list for PBXNativeTarget "StepCounterUITests" */;
-			buildPhases = (
-				72BA348A2D26D15100CACED0 /* Sources */,
-				72BA348B2D26D15100CACED0 /* Frameworks */,
-				72BA348C2D26D15100CACED0 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				72BA34902D26D15100CACED0 /* PBXTargetDependency */,
-			);
-			name = StepCounterUITests;
-			packageProductDependencies = (
-			);
-			productName = StepCounterUITests;
-			productReference = 72BA348E2D26D15100CACED0 /* StepCounterUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -168,10 +132,6 @@
 						CreatedOnToolsVersion = 16.2;
 					};
 					72BA34832D26D15100CACED0 = {
-						CreatedOnToolsVersion = 16.2;
-						TestTargetID = 72BA346E2D26D14F00CACED0;
-					};
-					72BA348D2D26D15100CACED0 = {
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = 72BA346E2D26D14F00CACED0;
 					};
@@ -193,7 +153,6 @@
 			targets = (
 				72BA346E2D26D14F00CACED0 /* StepCounter */,
 				72BA34832D26D15100CACED0 /* StepCounterTests */,
-				72BA348D2D26D15100CACED0 /* StepCounterUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -207,13 +166,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		72BA34822D26D15100CACED0 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		72BA348C2D26D15100CACED0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -237,13 +189,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		72BA348A2D26D15100CACED0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -251,11 +196,6 @@
 			isa = PBXTargetDependency;
 			target = 72BA346E2D26D14F00CACED0 /* StepCounter */;
 			targetProxy = 72BA34852D26D15100CACED0 /* PBXContainerItemProxy */;
-		};
-		72BA34902D26D15100CACED0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 72BA346E2D26D14F00CACED0 /* StepCounter */;
-			targetProxy = 72BA348F2D26D15100CACED0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -397,6 +337,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -404,6 +345,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evantempleton.StepCounter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -428,6 +373,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -435,6 +381,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evantempleton.StepCounter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -448,10 +398,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evantempleton.StepCounterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -466,46 +420,18 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evantempleton.StepCounterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StepCounter.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StepCounter";
-			};
-			name = Release;
-		};
-		72BA349F2D26D15100CACED0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.evantempleton.StepCounterUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = StepCounter;
-			};
-			name = Debug;
-		};
-		72BA34A02D26D15100CACED0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.evantempleton.StepCounterUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = StepCounter;
 			};
 			name = Release;
 		};
@@ -535,15 +461,6 @@
 			buildConfigurations = (
 				72BA349C2D26D15100CACED0 /* Debug */,
 				72BA349D2D26D15100CACED0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		72BA349E2D26D15100CACED0 /* Build configuration list for PBXNativeTarget "StepCounterUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				72BA349F2D26D15100CACED0 /* Debug */,
-				72BA34A02D26D15100CACED0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
