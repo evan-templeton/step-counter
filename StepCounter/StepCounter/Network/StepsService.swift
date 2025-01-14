@@ -55,6 +55,7 @@ final class StepsService: StepsServiceProtocol {
         }
     }
 
+    // MARK: - Fetch steps by hour from HealthKit
     func fetchStepsByHour() async throws -> [Int] {
         let now = Date()
         let startOfDay = Calendar.current.startOfDay(for: now)
@@ -92,6 +93,7 @@ final class StepsService: StepsServiceProtocol {
         return steps
     }
     
+    // MARK: - Fetch steps by day from testapi.mindware.us/steps
     func fetchStepsForLast30Days() async throws -> [DailyStepsResult] {
         do {
             let token = try await fetchAuthToken()
@@ -106,9 +108,19 @@ final class StepsService: StepsServiceProtocol {
     
     private func uploadSteps(_ steps: Int) async throws {
         let token = try await fetchAuthToken()
-        try await uploadSteps(authToken: token, steps: steps)
+        var request = try Self.buildUploadRequest(authToken: token)
+        let datetime = try getDateInUTC()
+        let model = StepsRequest(username: "user1@test.com", date: datetime, time: datetime, totalByDay: 0, count: steps)
+        request.httpBody = try JSONEncoder().encode(model)
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if let response = response as? HTTPURLResponse, response.statusCode != 200 {
+            let responseString = String(decoding: data, as: UTF8.self)
+            debugPrint("Error uploading steps: \(responseString)")
+            return
+        }
     }
     
+    // MARK: - API Auth
     private func fetchAuthToken() async throws -> String {
         if let token = UserDefaults.standard.string(forKey: "authToken") {
             return token
@@ -132,23 +144,7 @@ final class StepsService: StepsServiceProtocol {
         return token
     }
     
-    private func uploadSteps(authToken: String, steps: Int) async throws {
-        do {
-            var request = try Self.buildUploadRequest(authToken: authToken)
-            let datetime = try getDateInUTC()
-            let model = StepsRequest(username: "user1@test.com", date: datetime, time: datetime, totalByDay: 0, count: steps)
-            request.httpBody = try JSONEncoder().encode(model)
-            let (data, response) = try await URLSession.shared.data(for: request)
-            if let response = response as? HTTPURLResponse, response.statusCode != 200 {
-                let responseString = String(decoding: data, as: UTF8.self)
-                debugPrint("Error uploading steps: \(responseString)")
-                return
-            }
-        } catch {
-            throw error
-        }
-    }
-    
+    // MARK: - Request builders
     private static func buildUploadRequest(authToken: String) throws -> URLRequest {
         guard let url = URL(string: "https://testapi.mindware.us/steps") else {
             throw URLError(.badURL)
