@@ -15,7 +15,9 @@ final class ContentViewModel: ObservableObject {
     
     @Published var stepsByHour = [Int]()
     @Published var stepsByDay = [DailyStepsResult]()
-    @Published var errorMessage: String?
+    
+    @Published var nonFatalError: StepsServiceError?
+    @Published var fatalErrorMessage: String?
     
     let timer = Timer.publish(every: 300, on: .main, in: .common).autoconnect()
     private var timerBag = Set<AnyCancellable>()
@@ -38,7 +40,7 @@ final class ContentViewModel: ObservableObject {
     }
     
     func requestAuthorization() async {
-        errorMessage = nil
+        nonFatalError = nil
         do {
             try await stepsService.requestAuthorization()
         } catch {
@@ -47,7 +49,7 @@ final class ContentViewModel: ObservableObject {
     }
     
     func getStepsByHour() async {
-        errorMessage = nil
+        nonFatalError = nil
         do {
             let steps = try await stepsService.fetchStepsByHour()
             stepsByHour = steps
@@ -57,7 +59,7 @@ final class ContentViewModel: ObservableObject {
     }
     
     func getStepsByDay() async {
-        errorMessage = nil
+        nonFatalError = nil
         do {
             let steps = try await stepsService.fetchStepsForLast30Days()
             stepsByDay = steps
@@ -68,9 +70,13 @@ final class ContentViewModel: ObservableObject {
     
     private func handleError(_ error: Error) {
         if let error = error as? StepsServiceError {
-            errorMessage = error.userMessage
+            switch error.severity {
+                case .fatal: fatalErrorMessage = error.userMessage
+                case .nonFatal: nonFatalError = error
+            }
         } else {
-            errorMessage = "Unknown error"
+            nonFatalError = .unknown
         }
     }
 }
+

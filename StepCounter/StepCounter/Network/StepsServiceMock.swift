@@ -25,7 +25,7 @@ final class StepsServiceMock: StepsServiceProtocol {
     var stepsByHourOverride = [Int]()
     func fetchStepsByHour() async throws -> [Int] {
         if fetchStepsByHourShouldThrow {
-            throw StepsServiceError.fetchSteps
+            throw StepsServiceError.healthKitFetchSteps
         } else {
             return stepsByHourOverride
         }
@@ -35,7 +35,7 @@ final class StepsServiceMock: StepsServiceProtocol {
     var stepsByDayOverride = [DailyStepsResult]()
     func fetchStepsForLast30Days() async throws -> [DailyStepsResult] {
         if fetchStepsByDayShouldThrow {
-            throw StepsServiceError.fetchSteps
+            throw StepsServiceError.mindwareFetchSteps
         } else {
             return stepsByDayOverride
         }

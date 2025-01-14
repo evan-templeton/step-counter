@@ -18,14 +18,18 @@ struct ContentView: View {
     }
     
     var body: some View {
-        if let errorMessage = viewModel.errorMessage {
+        if let fatalErrorMessage = viewModel.fatalErrorMessage {
             ContentUnavailableView(
                 "Something went wrong",
                 systemImage: "heart.slash.fill",
-                description: Text(errorMessage)
+                description: Text(fatalErrorMessage)
             )
         } else {
             mainView
+                .sheet(item: $viewModel.nonFatalError) { error in
+                    Text(error.userMessage)
+                        .presentationDetents([.medium])
+                }
         }
     }
     
@@ -79,6 +83,10 @@ fileprivate enum Tab: CaseIterable {
 }
 
 #Preview {
-    let viewModel = ContentViewModel(stepsService: StepsServiceMock())
+    let service = StepsServiceMock()
+    service.fetchStepsByHourShouldThrow = false
+    service.fetchStepsByDayShouldThrow = false
+    service.stepsByHourOverride = [1, 2, 3, 4, 5]
+    let viewModel = ContentViewModel(stepsService: service)
     return ContentView(viewModel: viewModel)
 }
