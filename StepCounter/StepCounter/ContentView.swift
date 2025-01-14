@@ -39,13 +39,13 @@ struct ContentView: View {
             .pickerStyle(.segmented)
             TabView(selection: $selectedTab) {
                 TodayView(stepsByHour: viewModel.stepsByHour, openSettingsTapped: openSettings)
-                .tag(Tab.today)
+                    .tag(Tab.today)
                 HistoryView(thirtyDaySteps: viewModel.stepsByDay, buttonPressed: {
                     Task {
                         await viewModel.getStepsByDay()
                     }
                 })
-                    .tag(Tab.history)
+                .tag(Tab.history)
             }
             .task {
                 if !viewModel.isAuthorized {

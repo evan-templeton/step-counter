@@ -26,6 +26,10 @@ final class ContentViewModel: ObservableObject {
     
     init(stepsService: StepsServiceProtocol) {
         self.stepsService = stepsService
+        getStepsOnTimerPublish()
+    }
+    
+    private func getStepsOnTimerPublish() {
         self.timer.sink { _ in
             Task {
                 await self.getStepsByHour()
