@@ -11,9 +11,11 @@ struct DailyStepsResult: Identifiable, Equatable {
     let id: Int
     let datetime: Date
     let totalSteps: Int
-    
+}
+
+extension Date {
     var monthAndDay: String {
-        datetime.formatted(.dateTime.month(.defaultDigits).day())
+        formatted(.dateTime.month(.defaultDigits).day())
     }
 }
 

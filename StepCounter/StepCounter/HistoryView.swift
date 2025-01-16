@@ -40,7 +40,7 @@ struct HistoryView: View {
             Spacer()
             Chart {
                 ForEach(selectedSteps) { item in
-                    BarMark(x: .value("day", item.monthAndDay), y: .value("steps", item.totalSteps))
+                    BarMark(x: .value("day", item.datetime.monthAndDay), y: .value("steps", item.totalSteps))
                 }
             }
             .chartScrollableAxes(.horizontal)

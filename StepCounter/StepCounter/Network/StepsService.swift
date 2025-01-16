@@ -108,6 +108,21 @@ final class StepsService: StepsServiceProtocol {
         return steps
     }
     
+    private func uploadSteps(_ steps: Int) async throws {
+        let token = try await fetchAuthToken()
+        var request = try Self.buildUploadRequest(authToken: token)
+        let utcDate = try Self.getDateInUTC()
+        let dateString = try Self.getDateString()
+        let model = StepsRequest(username: "user1", date: dateString, datetime: utcDate, count: steps, totalByDay: 0)
+        request.httpBody = try JSONEncoder().encode(model)
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if let response = response as? HTTPURLResponse, response.statusCode != 200 {
+            let responseString = String(decoding: data, as: UTF8.self)
+            debugPrint("Error uploading steps: \(responseString)")
+            return
+        }
+    }
+    
     // MARK: - Fetch steps by day from testapi.mindware.us/steps
     func fetchStepsForLast30Days() async throws -> [DailyStepsResult] {
         let token = try await fetchAuthToken()
@@ -120,20 +135,6 @@ final class StepsService: StepsServiceProtocol {
         }
         let steps = try JSONDecoder().decode([DailyStepsResult].self, from: data)
         return steps.sorted(by: { $0.datetime < $1.datetime })
-    }
-    
-    private func uploadSteps(_ steps: Int) async throws {
-        let token = try await fetchAuthToken()
-        var request = try Self.buildUploadRequest(authToken: token)
-        let datetime = try Self.getDateInUTC()
-        let model = StepsRequest(username: "user1@test.com", date: datetime, time: datetime, totalByDay: 0, count: steps)
-        request.httpBody = try JSONEncoder().encode(model)
-        let (data, response) = try await URLSession.shared.data(for: request)
-        if let response = response as? HTTPURLResponse, response.statusCode != 200 {
-            let responseString = String(decoding: data, as: UTF8.self)
-            debugPrint("Error uploading steps: \(responseString)")
-            return
-        }
     }
     
     // MARK: - API Auth
@@ -189,12 +190,20 @@ final class StepsService: StepsServiceProtocol {
         }
     }
     
-    private static func getDateInUTC() throws -> Date {
+    private static func getDateInUTC() throws -> String {
         let calendar = Calendar.current
         let components = calendar.dateComponents(in: .gmt, from: Date())
         guard let datetime = calendar.date(from: components) else {
             throw StepsServiceError.utcTime
         }
-        return datetime
+        return datetime.ISO8601Format(.iso8601(timeZone: .gmt, includingFractionalSeconds: true)) + "Z"
+    }
+    
+    private static func getDateString() throws -> String {
+        let components = Calendar.current.dateComponents(in: .gmt, from: Date())
+        guard let day = components.day, let month = components.month, let year = components.year else {
+            throw StepsServiceError.utcTime
+        }
+        return "\(month)-\(day)-\(year)"
     }
 }
